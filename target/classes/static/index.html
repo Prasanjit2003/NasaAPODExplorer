@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>NASA APOD Explorer</title>
+
+  <!-- Global Error Handler (keeps UX friendly if something crashes) -->
+  <script>
+    window.onerror = function(message, source, lineno, colno, error) {
+      document.body.innerHTML = `
+        <div style="background:#0f172a;color:#ef4444;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:sans-serif;padding:20px;text-align:center;">
+          <h1 style="font-size:24px;margin-bottom:10px;">System Error</h1>
+          <p style="color:#94a3b8;margin-bottom:20px;">The interface failed to load.</p>
+          <div style="background:#1e293b;padding:15px;border-radius:8px;border:1px solid #ef4444;font-family:monospace;margin-bottom:20px;">
+            ${message} <br> (Line: ${lineno})
+          </div>
+          <button onclick="window.location.reload()" style="padding:10px 20px;background:#3b82f6;color:white;border:none;border-radius:5px;cursor:pointer;font-weight:bold;">Reload System</button>
+        </div>
+      `;
+    };
+  </script>
+
+  <!-- React (CDN - development) -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <!-- Babel for in-browser JSX compilation (development only) -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Tailwind CSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            slate: { 850: '#172033', 900: '#0f172a', 950: '#020617' }
+          },
+          animation: {
+            'warp': 'warp 1.5s linear infinite',
+            'fade-in': 'fadeIn 0.5s ease-out',
+          },
+          keyframes: {
+            warp: {
+              '0%': { opacity: '0', transform: 'scale(0.1)' },
+              '50%': { opacity: '1' },
+              '100%': { opacity: '0', transform: 'scale(2)' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+  <!-- Local styles -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <style>
+    body { background-color:#0f172a; color:#e2e8f0; font-family:Inter, sans-serif; min-height:100vh; overflow-x:hidden; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <div id="root" class="h-full w-full flex flex-col"></div>
+
+  <!-- App code (JSX compiled in browser). For dev convenience use text/babel -->
+  <script type="text/babel" src="js/app.jsx"></script>
+</body>
+</html>
