@@ -4,13 +4,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-/**
- * A custom Thread-Safe LRU (Least Recently Used) Cache with Time-To-Live (TTL).
- * * Logic:
- * 1. Extends LinkedHashMap to utilize its access-order feature for LRU eviction.
- * 2. Stores CacheObject wrappers that contain the data and a timestamp.
- * 3. On retrieval, checks if the item has expired.
- */
 public class SimpleLRUCache<K, V> {
 
     private final int capacity;
@@ -22,7 +15,6 @@ public class SimpleLRUCache<K, V> {
         this.capacity = capacity;
         this.ttlMillis = ttlMillis;
         
-        // Access-order LinkedHashMap: true passed to constructor enables LRU ordering
         this.cache = new LinkedHashMap<>(capacity, 0.75f, true) {
             @Override
             protected boolean removeEldestEntry(Map.Entry<K, CacheObject<V>> eldest) {
@@ -46,9 +38,7 @@ public class SimpleLRUCache<K, V> {
             CacheObject<V> wrapper = cache.get(key);
             if (wrapper == null) return null;
 
-            // Check Expiry
             if (System.currentTimeMillis() - wrapper.timestamp > ttlMillis) {
-                // Expired items are returned as null (and lazily removed later or overwritten)
                 return null; 
             }
             return wrapper.data;
