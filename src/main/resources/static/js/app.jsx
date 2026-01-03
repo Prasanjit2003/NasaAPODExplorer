@@ -1,5 +1,3 @@
-// Requires React + ReactDOM + Tailwind loaded in index.html
-
 const { useState, useEffect, useRef, useMemo, Component } = React;
 
 /* ---------------- ICONS ---------------- */
@@ -57,20 +55,17 @@ function FullscreenViewer({ open, onClose, media }) {
 
   useEffect(() => {
     if (!open) return;
-    // request browser fullscreen if available on the container
     const el = ref.current;
     const tryFullscreen = async () => {
       try {
         if (el && el.requestFullscreen) await el.requestFullscreen();
       } catch (e) {
-        // ignore
       }
     };
     tryFullscreen();
 
     const handleKey = (e) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', handleKey);
-    // cleanup: exit fullscreen if we opened it
     return () => {
       window.removeEventListener('keydown', handleKey);
       if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(()=>{});
@@ -124,7 +119,7 @@ const Navbar = ({ currentView, navigate }) => (
   </nav>
 );
 
-/* ---------------- MediaViewer (updated) ---------------- */
+/* ---------------- MediaViewer ---------------- */
 const MediaViewer = ({ data, addToFavorites, isFavorite, isModal = false }) => {
   const [speaking, setSpeaking] = useState(false);
   const [caption, setCaption] = useState("");
@@ -199,7 +194,7 @@ const MediaViewer = ({ data, addToFavorites, isFavorite, isModal = false }) => {
             <img src={data.hdurl || data.url} className={`w-full h-full ${isFullscreen ? 'object-contain' : 'object-cover'}`} alt={data.title} />
           )}
 
-          {/* Plain white subtitle (no background) */}
+          {/* Plain white subtitle */}
           {speaking && caption && (
             <div className="absolute bottom-12 left-0 right-0 flex justify-center px-4 pointer-events-none z-20">
               <div className="subtitle-box">{caption}</div>
@@ -219,7 +214,7 @@ const MediaViewer = ({ data, addToFavorites, isFavorite, isModal = false }) => {
               <Icons.Share />
             </button>
 
-            {/* Download: opens fullscreen-only viewer (no description) */}
+            {/* Download: opens fullscreen-only viewer */}
             <button onClick={handleDownloadClick} className="p-2 rounded-full bg-black/50 text-white backdrop-blur hover:bg-white/20 transition" title="Open image in fullscreen">
               <Icons.Download />
             </button>
@@ -282,13 +277,13 @@ const DetailModal = ({ data, onClose, addToFavorites, isFavorite }) => {
   );
 };
 
-/* ---------------- HomeView (keeps hero background + behaviour) ---------------- */
+/* ---------------- HomeView  ---------------- */
 const HomeView = ({ currentData, setCurrentData, addToFavorites, isFavorite }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [date, setDate] = useState(currentData ? currentData.date : new Date().toISOString().split('T')[0]);
 
-  // Hero image URL (illustrative astronaut / space).
+  // Hero image URL 
   const heroUrl = 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1600&q=80';
 
   const fetchData = async (dateVal, retry = false) => {
@@ -344,7 +339,7 @@ const HomeView = ({ currentData, setCurrentData, addToFavorites, isFavorite }) =
   );
 };
 
-/* ---------------- GridView + App (unchanged) ---------------- */
+/* ---------------- GridView + App ---------------- */
 const GridView = ({ items, onSelect, title }) => (
   <div className="pt-24 px-4 md:px-8 max-w-7xl mx-auto pb-10">
     <h2 className="text-3xl font-bold mb-8 border-b border-white/10 pb-4 text-white">{title}</h2>
