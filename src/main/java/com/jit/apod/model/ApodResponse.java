@@ -3,10 +3,6 @@ package com.jit.apod.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Represents the JSON response from NASA's API.
- * We map only the fields we need for the UI.
- */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ApodResponse {
     private String date;
@@ -19,7 +15,6 @@ public class ApodResponse {
     
     private String copyright;
 
-    // Getters and Setters
     public String getDate() { return date; }
     public void setDate(String date) { this.date = date; }
     public String getExplanation() { return explanation; }
